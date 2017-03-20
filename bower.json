@@ -1,0 +1,20 @@
+{
+  "name": "webgl-renderer",
+  "description": "render shit",
+  "main": "main.js",
+  "authors": [
+    "Andrew Nelson <andrew2nelson@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/yabberyabber/webgl-renderer",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "expr-eval": "^1.0.0"
+  }
+}

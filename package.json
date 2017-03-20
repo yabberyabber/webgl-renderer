@@ -1,0 +1,25 @@
+{
+  "name": "webgl-renderer",
+  "version": "1.0.0",
+  "description": "render shit",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yabberyabber/webgl-renderer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yabberyabber/webgl-renderer/issues"
+  },
+  "homepage": "https://github.com/yabberyabber/webgl-renderer#readme",
+  "devDependencies": {
+    "expr-eval": "^1.0.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}
