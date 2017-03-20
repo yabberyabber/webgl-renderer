@@ -102,7 +102,7 @@ function initBuffers(scene) {
             var colorBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
             var colors = scene.shapes[shape].points.map(
-                    (point) => { return point.color; });
+                    (point) => { return point.color || [1.0, 1.0, 0.0, 1.0]; });
             colors = [].concat.apply([], colors);
             console.log(colors);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors),

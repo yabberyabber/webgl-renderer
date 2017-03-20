@@ -3,16 +3,24 @@ import json
 
 points = []
 indices = []
+normals = []
 
 for line in fileinput.input():
     line = line.split(' ')
     if line[0] == 'v':
-        points.append({'x': line[1], 'y': line[2], 'z': line[3]})
+        points.append({
+            'x': float(line[1]),
+            'y': float(line[2]),
+            'z': float(line[3])})
     elif line[0] == 'f':
         indices.append([
-            line[1].split('/')[0],
-            line[1].split('/')[1],
-            line[1].split('/')[2]])
+            int(line[1].split('/')[0]) - 1,
+            int(line[2].split('/')[0]) - 1,
+            int(line[3].split('/')[0]) - 1])
 
-outpt = {"points": points, "indices": indices}
-
+outpt = {
+        "points": points,
+        "indices": indices,
+        "type": "primative"
+        }
+print(json.dumps(outpt))

@@ -28,7 +28,7 @@ SCENE = {
                 {x: -1.0, y: 1.0, z: 1.0, color: [0.0, 1.0, 0.0, 1.0]},
                 {x: -1.0, y: 1.0, z: -1.0, color: [0.0, 1.0, 0.0, 1.0]}
             ],
-            indices: [
+            "indices": [
                 [0, 1, 2], [0, 2, 3],
                 [4, 5, 6], [4, 6, 7],
                 [8, 9, 10], [8, 10, 11],
@@ -82,6 +82,13 @@ SCENE = {
                     "transforms": [
                         {"type": "translate", "x": 0, "y": 0.0, "z": -8.0},
                         {"type": "rotate", "theta": "0.05 * TIME", "x": 0.3, "y": 1, "z": 1}
+                    ]
+                },
+                {
+                    "object": "bunny",
+                    "transforms": [
+                        {"type": "translate", "x": 0, "y": -1.1, "z": -8.0},
+                        {"type": "rotate", "theta": "0.01 * TIME", "x": 0.3, "y": 1, "z": 1}
                     ]
                 }
             ]
