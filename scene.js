@@ -88,7 +88,17 @@ SCENE = {
                         {"type": "translate", "x": 2.0, "y": -2.0, "z": 0.0},
                     ],
                     "shader": {
-                        "name": "normal"
+                        "name": "phong",
+                        "arguments": {
+                            "LIGHT_POS": [0.0, 0.0, 0.0],
+                            "LIGHT_COLOR": [1.0, 1.0, 1.0],
+                            "OBJECT_COLOR": [1.0, 0.5, 0.8],
+                            "mat_ambient": [0.05, 0.05, 0.05],
+                            "mat_diffuse": [0.2, 0.2, 0.2],
+                            "mat_specular": [0.7, 0.7, 0.7],
+                            "mat_shiny": 0.6,
+                            "PEXP": 4.0,
+                        }
                     }
                 },
                 {
@@ -118,98 +128,6 @@ SCENE = {
                     ]
                 }
             ]
-        }
-    },
-    "shaders": {
-        "normal": {
-            "arguments": [
-                {"type": "attribute", "name": "aVertexPosition"},
-                {"type": "attribute", "name": "aVertexNormal"},
-                {"type": "uniform", "name": "uPMatrix"},
-                {"type": "uniform", "name": "uMVMatrix"},
-                {"type": "uniform", "name": "uNormalMatrix"},
-            ],
-            "fragment": `
-                precision mediump float;
-                varying vec4 vColor;
-                void main(void) {
-                    gl_FragColor = vColor;
-                }
-            `,
-            "vertex": `
-                attribute vec3 aVertexPosition;
-                attribute vec3 aVertexNormal;
-                uniform mat4 uMVMatrix;
-                uniform mat4 uNormalMatrix;
-                uniform mat4 uPMatrix;
-                varying vec4 vColor;
-                varying vec3 vNormal;
-                void main(void) {
-                    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-                    vec4 newNormal = uNormalMatrix *
-                             vec4(aVertexNormal.x,
-                                  aVertexNormal.y,
-                                  aVertexNormal.z,
-                                  1.0);
-                    vColor = vec4(abs(newNormal.x),
-                                  abs(newNormal.y),
-                                  abs(newNormal.z),
-                                  1.0);
-                }
-            `
-        },
-        "colored": {
-            "arguments": [
-                {"type": "attribute", "name": "aVertexPosition"},
-                {"type": "uniform", "name": "uPMatrix"},
-                {"type": "uniform", "name": "uMVMatrix"},
-                {"type": "uniform", "name": "uColor", "varType": "vec4"},
-            ],
-            "fragment": `
-                precision mediump float;
-                varying vec4 vColor;
-                void main(void) {
-                    gl_FragColor = vColor;
-                }
-            `,
-            "vertex": `
-                attribute vec3 aVertexPosition;
-                uniform mat4 uMVMatrix;
-                uniform mat4 uPMatrix;
-                uniform vec4 uColor;
-                varying vec4 vColor;
-                varying vec3 vNormal;
-                void main(void) {
-                    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-                    vColor = uColor;
-                }
-            `
-        },
-        "default": {
-            "arguments": [
-                {"type": "attribute", "name": "aVertexPosition"},
-                {"type": "attribute", "name": "aVertexColor"},
-                {"type": "uniform", "name": "uPMatrix"},
-                {"type": "uniform", "name": "uMVMatrix"},
-            ],
-            "fragment": `
-                precision mediump float;
-                varying vec4 vColor;
-                void main(void) {
-                    gl_FragColor = vColor;
-                }
-            `,
-            "vertex": `
-                attribute vec3 aVertexPosition;
-                attribute vec4 aVertexColor;
-                uniform mat4 uMVMatrix;
-                uniform mat4 uPMatrix;
-                varying vec4 vColor;
-                void main(void) {
-                    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-                    vColor = aVertexColor;
-                }
-            `
         }
     }
 };

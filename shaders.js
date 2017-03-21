@@ -135,6 +135,13 @@ function setUniforms(shaderArgs) {
             if (type == "4fv") {
                 gl.uniformMatrix4fv(shaderProgram.args[argName].location, false, val);
             }
+            else if (type == "f1") {
+                gl.uniform1f(shaderProgram.args[argName].location, val);
+            }
+            else if (type == "vec3") {
+                gl.uniform3fv(shaderProgram.args[argName].location,
+                    new Float32Array(val));
+            }
             else if (type == "vec4") {
                 gl.uniform4fv(shaderProgram.args[argName].location,
                     new Float32Array(val));
