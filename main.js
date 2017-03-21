@@ -19,6 +19,7 @@ function webGLStart() {
 	var canvas = document.getElementById("oops");
 	initGL(canvas);
 	initShaders(SCENE);
+	initTextures(SCENE);
 	initBuffers(SCENE);
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);
 	gl.enable(gl.DEPTH_TEST);

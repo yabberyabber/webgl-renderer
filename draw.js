@@ -1,5 +1,4 @@
 function drawObj(obj, scene, shaderInfo) {
-    console.log(obj);
     if (scene.shapes[obj].type == "primative") {
         setShaderInfo(shaderInfo);
 
@@ -16,8 +15,6 @@ function drawObj(obj, scene, shaderInfo) {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, shapes[obj].indices);
 
         if (shapes[obj].normals && shaderProgram.args.aVertexNormal) {
-            console.log("binding normals", shapes[obj].normals,
-                shaderProgram.args.aVertexNormal);
             gl.bindBuffer(gl.ARRAY_BUFFER, shapes[obj].normals);
             gl.vertexAttribPointer(shaderProgram.args.aVertexNormal.location,
                     shapes[obj].normals.itemSize, gl.FLOAT, false, 0, 0);
@@ -74,5 +71,3 @@ function drawScene(scene) {
     drawObj("main", scene, defaultShader);
     mvPopMatrix();
 }
-
-

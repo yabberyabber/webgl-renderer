@@ -149,3 +149,27 @@ function setUniforms(shaderArgs) {
         }
     }
 }
+
+var textures = {};
+function initTextures(scene) {
+    for (let textureName in scene.textures) {
+        if (scene.textures.hasOwnProperty(textureName)) {
+            let textureImg = new Image();
+            textureImg.onload = function() { textureLoadCallback(textureImg, textureName); };
+            textureImg.src = scene.textures[textureName].src;
+        }
+    }
+}
+
+function textureLoadCallback(textureImg, textureName) {
+    console.log(textureImg, textureName);
+    let texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textureImg);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+    textures[textureName] = texture;
+    console.log("Successfully loaded textureL ", textureName);
+}

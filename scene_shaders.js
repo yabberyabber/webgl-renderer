@@ -169,3 +169,8 @@ SCENE.shaders = {
         `
     },
 };
+SCENE.textures = {
+    "firefox_cube": {
+        "src": "firefox_cube_texture.png"
+    }
+};
