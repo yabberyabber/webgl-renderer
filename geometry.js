@@ -71,7 +71,7 @@ function initBuffers(scene) {
                         (point) => { return [point.normal.x,
                                              point.normal.y,
                                              point.normal.z]; });
-                normals = [].concat.apply([], points);
+                normals = [].concat.apply([], normals);
                 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals),
                         gl.STATIC_DRAW);
                 normBuffer.itemSize = 3;

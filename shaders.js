@@ -116,6 +116,13 @@ function setUniforms(shaderArgs) {
                 val = mvMatrix;
                 type = "4fv";
             }
+            else if (argName == "uNormalMatrix") {
+                val = mat4.create();
+                mat4.set(mvMatrix, val);
+                mat4.transpose(val);
+                mat4.inverse(val);
+                type = "4fv";
+            }
             else if (shaderArgs[argName]) {
                 val = shaderArgs[argName];
                 type = shaderProgram.args[argName].varType;

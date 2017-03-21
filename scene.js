@@ -58,13 +58,13 @@ SCENE = {
                 }
             ]
         },
-        "four_cubes": {
+        "four_bunnies": {
             "type": "composit",
             "contents": [
                 {
-                    "object": "two_cubes",
+                    "object": "bunny",
                     "transforms": [
-                        {"type": "translate", "x": 0, "y": 2.0, "z": 0.0},
+                        {"type": "translate", "x": 2.0, "y": 2.0, "z": 0.0},
                     ],
                     "shader": {
                         "name": "colored",
@@ -74,10 +74,27 @@ SCENE = {
                     }
                 },
                 {
-                    "object": "two_cubes",
+                    "object": "bunny",
                     "transforms": [
-                        {"type": "translate", "x": 0, "y": -2.0, "z": 0.0},
-                        {"type": "scale", "x": 1.0, "y": 0.5, "z": 0.5},
+                        {"type": "translate", "x": -2.0, "y": 2.0, "z": 0.0},
+                    ],
+                    "shader": {
+                        "name": "normal"
+                    }
+                },
+                {
+                    "object": "bunny",
+                    "transforms": [
+                        {"type": "translate", "x": 2.0, "y": -2.0, "z": 0.0},
+                    ],
+                    "shader": {
+                        "name": "normal"
+                    }
+                },
+                {
+                    "object": "bunny",
+                    "transforms": [
+                        {"type": "translate", "x": -2.0, "y": -2.0, "z": 0.0},
                     ]
                 }
             ]
@@ -86,22 +103,19 @@ SCENE = {
             "type": "composit",
             "contents": [
                 {
-                    "object": "four_cubes",
+                    "object": "four_bunnies",
                     "transforms": [
                         {"type": "translate", "x": 0, "y": 0.0, "z": -8.0},
                         {"type": "rotate", "theta": "0.05 * TIME", "x": 0.3, "y": 1, "z": 1}
                     ]
                 },
                 {
-                    "object": "bunny",
+                    "object": "cube",
                     "transforms": [
-                        {"type": "translate", "x": 0, "y": -1.1, "z": -8.0},
-                        {"type": "rotate", "theta": "0.1 * TIME", "x": 0.3, "y": 1, "z": 1},
-                        {"type": "translate", "x": 0.0, "y": -0.5, "z": 0.0},
-                    ],
-                    "shader": {
-                        "name": "normal"
-                    }
+                        {"type": "translate", "x": 0, "y": 0.0, "z": -8.0},
+                        {"type": "rotate", "theta": "0.01 * TIME", "x": 0.3, "y": 1, "z": 1},
+                        {"type": "scale", "x": 1.0, "y": 0.5, "z": 0.5},
+                    ]
                 }
             ]
         }
@@ -113,6 +127,7 @@ SCENE = {
                 {"type": "attribute", "name": "aVertexNormal"},
                 {"type": "uniform", "name": "uPMatrix"},
                 {"type": "uniform", "name": "uMVMatrix"},
+                {"type": "uniform", "name": "uNormalMatrix"},
             ],
             "fragment": `
                 precision mediump float;
@@ -125,12 +140,21 @@ SCENE = {
                 attribute vec3 aVertexPosition;
                 attribute vec3 aVertexNormal;
                 uniform mat4 uMVMatrix;
+                uniform mat4 uNormalMatrix;
                 uniform mat4 uPMatrix;
                 varying vec4 vColor;
                 varying vec3 vNormal;
                 void main(void) {
                     gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-                    vColor = vec4(aVertexNormal, 1.0);
+                    vec4 newNormal = uNormalMatrix *
+                             vec4(aVertexNormal.x,
+                                  aVertexNormal.y,
+                                  aVertexNormal.z,
+                                  1.0);
+                    vColor = vec4(abs(newNormal.x),
+                                  abs(newNormal.y),
+                                  abs(newNormal.z),
+                                  1.0);
                 }
             `
         },
