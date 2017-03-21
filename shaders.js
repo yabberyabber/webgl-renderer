@@ -7,7 +7,6 @@ function createShader(gl, shaderScript, type) {
 	} else {
 		return null;
 	}
-    console.log(shaderScript);
 	gl.shaderSource(shader, shaderScript);
 	gl.compileShader(shader);
 	if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
@@ -21,7 +20,6 @@ var shaders = {};
 var shaderProgram;
 function initShaders(scene) {
     for (var shaderName in scene.shaders) {
-        console.log("shaderName: ", shaderName);
         if (scene.shaders.hasOwnProperty(shaderName)) {
             var shaderObj = scene.shaders[shaderName];
 
@@ -38,16 +36,13 @@ function initShaders(scene) {
                 alert("Could not initialise shaders");
             }
             gl.useProgram(program);
-            console.log(program);
 
             var args = {};
             for (var i = 0; i < shaderObj.arguments.length; i++) {
                 var arg = shaderObj.arguments[i];
-                console.log("arg: ", arg);
                 if (arg.type == "attribute") {
                     arg.location = gl.getAttribLocation(program, arg.name);
                     args[arg.name] = arg;
-                    gl.enableVertexAttribArray(arg.location);
                 }
                 else if (arg.type == "uniform") {
                     arg.location = gl.getUniformLocation(program, arg.name);
@@ -59,31 +54,84 @@ function initShaders(scene) {
             }
             shaders[shaderName] = {
                 program: program,
-                args: args
+                args: args,
+                name: shaderName
             };
-            console.log("shaderName: ", shaderName);
         }
     }
     shaderProgram = shaders.default;
+    enableAttributes(shaderProgram);
+    gl.useProgram(shaderProgram.program);
 }
 var shaderSceneProperties = {};
-function selectShaderProgram(shader) {
-    let program = shader.name;
-    
-    for (let i = 0; i < shaderProgram.args.length; i++) {
-        let arg = shaderProgram.args[i];
-        if (arg.type == "attribute") {
-            gl.disableVertexAttributeArray(arg.location);
-        }
-    }
-    shaderProgram = shaders[program];
-    gl.useProgram(shaderProgram.program);
-    for (let i = 0; i < shaderProgram.args.length; i++) {
-        let arg = shaderProgram.args[i];
-        if (arg.type == "attribute") {
-            gl.enableVertexAttributeArray(arg.location);
+
+function enableAttributes(shader) {
+    for (let argName in shader.args) {
+        if (shader.args.hasOwnProperty(argName)) {
+            let arg = shader.args[argName];
+            if (arg.type == "attribute") {
+                gl.enableVertexAttribArray(arg.location);
+            }
         }
     }
 }
 
+function disableAttributes(shader) {
+    for (let argName in shader.args) {
+        if (shader.args.hasOwnProperty(argName)) {
+            let arg = shader.args[argName];
+            if (arg.type == "attribute") {
+                gl.disableVertexAttribArray(arg.location);
+            }
+        }
+    }
+}
+function selectShaderProgram(programName) {
+    disableAttributes(shaderProgram);
+    shaderProgram = shaders[programName];
+    gl.useProgram(shaderProgram.program);
+    enableAttributes(shaderProgram);
+}
 
+function setShaderInfo(info) {
+    selectShaderProgram(info.name);
+    setUniforms(info.arguments || {});
+}
+
+/**
+ * uPMatrix and uMVMatrix are special case uniforms.  Everything else must be 
+ * set in shaderArgs
+ */
+function setUniforms(shaderArgs) {
+    for (let argName in shaderProgram.args) {
+        if (shaderProgram.args.hasOwnProperty(argName) &&
+                shaderProgram.args[argName].type == "uniform") {
+            let arg = shaderProgram.args[argName];
+            let val, type;
+            if (argName == "uPMatrix") {
+                val = pMatrix;
+                type = "4fv";
+            }
+            else if (argName == "uMVMatrix") {
+                val = mvMatrix;
+                type = "4fv";
+            }
+            else if (shaderArgs[argName]) {
+                val = shaderArgs[argName];
+                type = shaderProgram.args[argName].varType;
+            }
+            else {
+                alert("Uniform not set: ", argName);
+                console.log("Uniform not set: ", argName);
+            }
+
+            if (type == "4fv") {
+                gl.uniformMatrix4fv(shaderProgram.args[argName].location, false, val);
+            }
+            else if (type == "vec4") {
+                gl.uniform4fv(shaderProgram.args[argName].location,
+                    new Float32Array(val));
+            }
+        }
+    }
+}

@@ -1,26 +1,32 @@
-function drawObj(obj, scene) {
+function drawObj(obj, scene, shaderInfo) {
+    console.log(obj);
     if (scene.shapes[obj].type == "primative") {
+        setShaderInfo(shaderInfo);
+
         gl.bindBuffer(gl.ARRAY_BUFFER, shapes[obj].points);
         gl.vertexAttribPointer(shaderProgram.args.aVertexPosition.location,
                 shapes[obj].points.itemSize, gl.FLOAT, false, 0, 0);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, shapes[obj].colors);
-        gl.vertexAttribPointer(shaderProgram.args.aVertexColor.location,
-                shapes[obj].colors.itemSize, gl.FLOAT, false, 0, 0);
+        if (shaderProgram.args.aVertexColor) {
+            gl.bindBuffer(gl.ARRAY_BUFFER, shapes[obj].colors);
+            gl.vertexAttribPointer(shaderProgram.args.aVertexColor.location,
+                    shapes[obj].colors.itemSize, gl.FLOAT, false, 0, 0);
+        }
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, shapes[obj].indices);
 
-        if (shapes[obj].normals) {
+        if (shapes[obj].normals && shaderProgram.args.aVertexNormal) {
+            console.log("binding normals", shapes[obj].normals,
+                shaderProgram.args.aVertexNormal);
             gl.bindBuffer(gl.ARRAY_BUFFER, shapes[obj].normals);
+            gl.vertexAttribPointer(shaderProgram.args.aVertexNormal.location,
+                    shapes[obj].normals.itemSize, gl.FLOAT, false, 0, 0);
         }
-
-        setMatrixUniforms();
 
         gl.drawElements(gl.TRIANGLES, shapes[obj].indices.numItems,
                 gl.UNSIGNED_SHORT, 0);
     }
     else {
-        console.log(obj);
         obj = scene.shapes[obj];
 
         for (var i = 0; i < obj.contents.length; i++) {
@@ -47,7 +53,11 @@ function drawObj(obj, scene) {
                     throw "Invalid transform type: " + transform.type;
                 }
             }
-            drawObj(obj.contents[i].object, scene);
+
+            let childShaderInfo =
+                obj.contents[i].shader || shaderInfo;
+
+            drawObj(obj.contents[i].object, scene, childShaderInfo);
             mvPopMatrix();
         }
     }
@@ -60,29 +70,9 @@ function drawScene(scene) {
 
 	mvPushMatrix();
 	mat4.identity(mvMatrix);
-    drawObj("main", scene);
+    var defaultShader = {"name": "default"};
+    drawObj("main", scene, defaultShader);
     mvPopMatrix();
 }
 
-function setMatrixUniforms() {
-    for (let argName in shaderProgram.args) {
-        if (shaderProgram.args.hasOwnProperty(argName) &&
-                shaderProgram.args[argName].type == "uniform") {
-            let arg = shaderProgram.args[argName];
-            let val;
-            if (argName == "uPMatrix") {
-                val = pMatrix;
-            }
-            else if (argName == "uMVMatrix") {
-                val = mvMatrix;
-            }
-            else if (sceneShaderProperties[argName]) {
-                val = sceneShaderProperties[argName];
-            }
-            else {
-                alert("Uniform not set: ", argName);
-            }
-            gl.uniformMatrix4fv(shaderProgram.args[argName].location, false, val);
-        }
-    }
-}
+

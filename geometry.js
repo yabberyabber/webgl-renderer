@@ -27,7 +27,6 @@ function initBuffers(scene) {
             var points = scene.shapes[shape].points.map(
                     (point) => { return [point.x, point.y, point.z]; });
             points = [].concat.apply([], points);
-            console.log(points);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points),
                     gl.STATIC_DRAW);
             pointBuffer.itemSize = 3;
@@ -47,7 +46,6 @@ function initBuffers(scene) {
                             [1.0, 1.0, 0.0, 1.0];
                     });
             colors = [].concat.apply([], colors);
-            console.log(colors);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors),
                     gl.STATIC_DRAW);
             colorBuffer.itemSize = 4;
@@ -59,7 +57,6 @@ function initBuffers(scene) {
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idxBuffer);
             var indices = scene.shapes[shape].indices;
             indices = [].concat.apply([], indices);
-            console.log(indices);
             gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices),
                     gl.STATIC_DRAW);
             idxBuffer.itemSize = 1;
