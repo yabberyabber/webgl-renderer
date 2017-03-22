@@ -8,14 +8,7 @@ There's 4 bunnies around it demonstrating
  - color=normal shading (with static normal)
  - color=normal shading (with dynamic normal)
 
-TODONE
-basic scenes (single shapes from geometry)
-compositions of scenes
-transformations (rotate, translate, scale) of scenes
-conversion tool between OBJ files and json files
+# Check it out
+basic demonstration
+https://youtu.be/1zvbMkwnWwY
 
-TODO
-
-textures.  Check out https://mdn.github.io/webgl-examples/tutorial/sample7/
-seperation of resources into seperate JSON and recombination at runtime
-responding to user input (moving camera)

@@ -120,6 +120,26 @@ SCENE = {
                     ]
                 },
                 {
+                    "object": "teapot",
+                    "transforms": [
+                        {"type": "translate", "x": 0.0, "y": 0.0, "z": -6.0},
+                        {"type": "rotate", "theta": "0.04 * TIME", "x": 0.3, "y": 1, "z": 1}
+                    ],
+                    "shader": {
+                        "name": "phong",
+                        "arguments": {
+                            "LIGHT_POS": [0.0, 3.0, 0.0],
+                            "LIGHT_COLOR": [1.0, 1.0, 1.0],
+                            "OBJECT_COLOR": [1.0, 0.5, 0.8],
+                            "mat_ambient": [0.05, 0.05, 0.05],
+                            "mat_diffuse": [0.2, 0.2, 0.2],
+                            "mat_specular": [0.7, 0.7, 0.7],
+                            "mat_shiny": 0.6,
+                            "PEXP": 64.0,
+                        }
+                    }
+                },
+                {
                     "object": "cube",
                     "transforms": [
                         {"type": "translate", "x": 0, "y": 0.0, "z": -8.0},
