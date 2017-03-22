@@ -9,6 +9,8 @@ There's 4 bunnies around it demonstrating
  - color=normal shading (with dynamic normal)
 
 # Check it out
-basic demonstration
+Basic demonstration
 https://youtu.be/1zvbMkwnWwY
 
+Adding an obj file exported from blender
+https://www.youtube.com/watch?v=THJvWkMDgTo
